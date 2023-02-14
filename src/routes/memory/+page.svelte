@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Card from '$components/memory/Card.svelte';
 	import { selectedCards } from '$components/memory/stores';
+	import { shuffleArray } from '$components/memory/utils';
 	import { Bookmark, Check, Clipboard, Cloud, LightBulb } from 'svelte-hero-icons';
 	let score = 0;
 
@@ -10,21 +11,27 @@
 			$selectedCards = [];
 		}, 750);
 	}
+
+	const icons = [
+		{ id: 1, icon: Check },
+		{ id: 2, icon: Check },
+		{ id: 3, icon: LightBulb },
+		{ id: 4, icon: LightBulb },
+		{ id: 5, icon: Clipboard },
+		{ id: 6, icon: Clipboard },
+		{ id: 7, icon: Cloud },
+		{ id: 8, icon: Cloud },
+		{ id: 9, icon: Bookmark }
+	];
 </script>
 
 <section class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
 	<h1 class="mb-4 text-center text-4xl">Memory</h1>
 	<p class="mb-4 text-center">Score: {score}</p>
 	<div class="inline-grid grid-cols-3 gap-4">
-		<Card id={1} icon={Check} />
-		<Card id={2} icon={LightBulb} />
-		<Card id={3} icon={Cloud} />
-		<Card id={4} icon={LightBulb} />
-		<Card id={5} icon={Check} />
-		<Card id={6} icon={Clipboard} />
-		<Card id={7} icon={Cloud} />
-		<Card id={8} icon={Bookmark} />
-		<Card id={9} icon={Clipboard} />
+		{#each shuffleArray(icons) as { icon, id } (id)}
+			<Card {id} {icon} />
+		{/each}
 	</div>
 </section>
 
