@@ -1,15 +1,44 @@
 <script lang="ts">
 	import Card from '$components/memory/Card.svelte';
-	import { selectedCards } from '$components/memory/stores';
+	import { alreadyMatched, selectedCards } from '$components/memory/stores';
 	import { shuffleArray } from '$components/memory/utils';
 	import { Bookmark, Check, Clipboard, Cloud, LightBulb } from 'svelte-hero-icons';
 	let score = 0;
 
+	// Two cards have been selected
 	$: if ($selectedCards.length > 1) {
 		setTimeout(() => {
-			if ($selectedCards[0].icon === $selectedCards[1].icon) score++;
+			// Lose points for choosing one you've already matched
+			let hasAlreadyMatched = false;
+			$selectedCards.forEach((selected) => {
+				if ($alreadyMatched.find((card) => card.icon === selected.icon)) {
+					score--;
+					hasAlreadyMatched = true;
+				}
+			});
+			if (hasAlreadyMatched) {
+				$selectedCards = [];
+				return checkIfGameOver();
+			}
+			// Both cards match and haven't matched before
+			if ($selectedCards[0].icon === $selectedCards[1].icon) {
+				$alreadyMatched = [...$alreadyMatched, $selectedCards[0]];
+				score++;
+				$selectedCards = [];
+				return checkIfGameOver();
+			}
 			$selectedCards = [];
+			checkIfGameOver();
 		}, 750);
+	}
+
+	function checkIfGameOver() {
+		if ($alreadyMatched.length === 4) {
+			alert(`You matched 'em all! Your score was ${score}.'`);
+			score = 0;
+			$alreadyMatched = [];
+			$selectedCards = [];
+		}
 	}
 
 	const icons = [
