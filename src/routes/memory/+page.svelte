@@ -27,3 +27,12 @@
 		<Card id={9} icon={Clipboard} />
 	</div>
 </section>
+
+<a
+	target="_blank"
+	rel="noreferrer"
+	class="fixed top-3 right-3 text-xs uppercase text-gray-500"
+	href="https://github.com/schwartzmj/micro-projects/blob/main/src/routes/memory/%2Bpage.svelte"
+>
+	View this page on Github
+</a>
