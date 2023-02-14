@@ -34,7 +34,7 @@
 
 	function checkIfGameOver() {
 		if ($alreadyMatched.length === 4) {
-			alert(`You matched 'em all! Your score was ${score}.'`);
+			alert(`You matched 'em all! Your score was ${score}.`);
 			score = 0;
 			$alreadyMatched = [];
 			$selectedCards = [];
