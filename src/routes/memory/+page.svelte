@@ -7,26 +7,20 @@
 
 	// Two cards have been selected
 	$: if ($selectedCards.length > 1) {
+		// Lose points for choosing one you've already matched
+		let hasAlreadyMatched = false;
+		$selectedCards.forEach((selected) => {
+			if ($alreadyMatched.find((card) => card.icon === selected.icon)) {
+				score--;
+				hasAlreadyMatched = true;
+			}
+		});
+		// Both cards match and haven't matched before
+		if (!hasAlreadyMatched && $selectedCards[0].icon === $selectedCards[1].icon) {
+			$alreadyMatched = [...$alreadyMatched, $selectedCards[0]];
+			score++;
+		}
 		setTimeout(() => {
-			// Lose points for choosing one you've already matched
-			let hasAlreadyMatched = false;
-			$selectedCards.forEach((selected) => {
-				if ($alreadyMatched.find((card) => card.icon === selected.icon)) {
-					score--;
-					hasAlreadyMatched = true;
-				}
-			});
-			if (hasAlreadyMatched) {
-				$selectedCards = [];
-				return checkIfGameOver();
-			}
-			// Both cards match and haven't matched before
-			if ($selectedCards[0].icon === $selectedCards[1].icon) {
-				$alreadyMatched = [...$alreadyMatched, $selectedCards[0]];
-				score++;
-				$selectedCards = [];
-				return checkIfGameOver();
-			}
 			$selectedCards = [];
 			checkIfGameOver();
 		}, 750);
